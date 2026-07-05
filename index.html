@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deeply — A private journal that helps you understand yourself</title>
+<meta name="description" content="Deeply is a private journaling app. Your words stay on your phone by default. Write every day, in your own language, and see gentle patterns in how you feel over time.">
+<style>
+  :root {
+    --paper: #EDE9DE;
+    --paper-raised: #F5F2E9;
+    --ink: #21281F;
+    --ink-soft: #5B6355;
+    --moss: #45604C;
+    --moss-deep: #2E4433;
+    --plum: #7C5D70;
+    --plum-soft: #E4D9DF;
+    --line: #D7D1C0;
+    --gold: #B08F4A;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 0 0 16px 0;
+    color: var(--ink);
+  }
+
+  p { margin: 0 0 16px 0; }
+
+  a { color: inherit; }
+
+  img { max-width: 100%; display: block; }
+
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- Header ---------- */
+  header.site {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  header.site .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .brand .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--moss);
+    display: inline-block;
+  }
+  .nav-cta {
+    background: var(--moss-deep);
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 64px 0 40px;
+  }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  .eyebrow .pip {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--moss);
+  }
+  .hero h1 {
+    font-size: 48px;
+    max-width: 12ch;
+  }
+  .hero .lead {
+    font-size: 19px;
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 28px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .btn-primary {
+    background: var(--moss-deep);
+    color: #fff;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .trust-line {
+    margin-top: 22px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .phone-frame {
+    position: relative;
+    max-width: 300px;
+    margin: 0 auto;
+    border-radius: 40px;
+    padding: 14px;
+    background: var(--moss-deep);
+    box-shadow: 0 30px 60px -20px rgba(33,40,31,0.45);
+  }
+  .phone-frame img {
+    border-radius: 28px;
+    width: 100%;
+  }
+  .phone-frame .notch {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 8px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.35);
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding: 72px 0; }
+  .section-head {
+    max-width: 620px;
+    margin: 0 auto 48px;
+    text-align: center;
+  }
+  .section-head h2 { font-size: 34px; }
+  .section-head p { color: var(--ink-soft); font-size: 17px; }
+
+  .band-alt { background: var(--paper-raised); }
+
+  .feature {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 56px;
+    align-items: center;
+    padding: 40px 0;
+  }
+  .feature.reverse .feature-art { order: 2; }
+  .feature.reverse .feature-copy { order: 1; }
+  .feature + .feature {
+    border-top: 1px solid var(--line);
+  }
+  .feature-art {
+    display: flex;
+    justify-content: center;
+  }
+  .feature-art .phone-frame { max-width: 230px; }
+  .feature-copy .kicker {
+    color: var(--moss);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .feature-copy h3 { font-size: 26px; }
+  .feature-copy p { color: var(--ink-soft); font-size: 16.5px; }
+  .feature-copy ul {
+    padding-left: 20px;
+    margin: 18px 0 0;
+    color: var(--ink-soft);
+  }
+  .feature-copy li { margin-bottom: 8px; }
+
+  /* ---------- Privacy pill / how it works ---------- */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-family: "Courier New", monospace;
+  }
+  .pill.moss::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--moss); }
+  .pill.plum::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--plum); }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 24px;
+  }
+  .card .icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--plum-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .card h4 { margin: 0 0 8px; font-size: 18px; font-family: Georgia, serif; }
+  .card p { color: var(--ink-soft); font-size: 15px; margin: 0; }
+
+  /* ---------- Pricing ---------- */
+  .price-card {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--moss-deep);
+    color: #fff;
+    border-radius: 24px;
+    padding: 40px;
+    text-align: center;
+  }
+  .price-card .amount {
+    font-family: Georgia, serif;
+    font-size: 52px;
+    color: var(--gold);
+    margin: 8px 0;
+  }
+  .price-card .amount span {
+    font-size: 18px;
+    color: #cfd6c9;
+  }
+  .price-tag {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--moss-deep);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .price-list {
+    text-align: left;
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 30px;
+  }
+  .price-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.14);
+    display: flex;
+    gap: 10px;
+  }
+  .price-list li:last-child { border-bottom: none; }
+  .price-card .btn-primary {
+    background: var(--gold);
+    color: var(--moss-deep);
+    width: 100%;
+    justify-content: center;
+  }
+  .price-fine {
+    font-size: 13px;
+    color: #cfd6c9;
+    margin-top: 16px;
+  }
+
+  /* ---------- Testimonial-ish reassurance strip ---------- */
+  .reassure {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+  .reassure .stat {
+    font-family: Georgia, serif;
+    font-size: 30px;
+    color: var(--moss-deep);
+  }
+  .reassure .label {
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    background: var(--moss-deep);
+    color: #d9ddd3;
+    padding: 48px 0 28px;
+    font-size: 14.5px;
+  }
+  footer .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  footer .brand { color: #fff; }
+  footer a { text-decoration: none; opacity: 0.85; }
+  footer a:hover { opacity: 1; }
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .footer-bottom {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    font-size: 13px;
+    opacity: 0.7;
+    text-align: center;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .hero .wrap { grid-template-columns: 1fr; text-align: center; }
+    .hero .lead { margin-left: auto; margin-right: auto; }
+    .hero h1 { max-width: none; font-size: 36px; }
+    .btn-row { justify-content: center; }
+    .trust-line { justify-content: center; }
+    .feature, .feature.reverse {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .feature.reverse .feature-art,
+    .feature.reverse .feature-copy { order: initial; }
+    .feature-copy ul { text-align: left; display: inline-block; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .reassure { grid-template-columns: repeat(2, 1fr); }
+    footer .wrap { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Deeply</div>
+    <a class="nav-cta" href="#download">Get the app</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow"><span class="pip"></span> Private by default, on any phone</span>
+      <h1>A journal that keeps your words yours.</h1>
+      <p class="lead">Write a little every day — by typing or speaking, in whatever language feels natural. Deeply quietly notices patterns in your mood and thoughts, so you can understand yourself a little better each week.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#download">Start journaling free</a>
+        <a class="btn btn-secondary" href="#how-it-works">See how it works</a>
+      </div>
+      <div class="trust-line">🔒 Works fully offline. Nothing leaves your phone unless you choose to connect it.</div>
+    </div>
+    <div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <img src="images/image1.png" alt="Deeply onboarding screen explaining that your words stay on your device by default">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band-alt" id="how-it-works">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Everything you need. Nothing you don't.</h2>
+      <p>No account required to start. No ads. No selling your thoughts. Just a calm place to write, every day.</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-art">
+        <div class="phone-frame"><div class="notch"></div><img src="images/image2.png" alt="Deeply journal timeline showing a streak of daily entries with privacy tags"></div>
+      </div>
+      <div class="feature-copy">
+        <div class="kicker">Daily Journal</div>
+        <h3>Build a simple daily habit.</h3>
+        <p>Open the app, see your streak, and write. Entries are organized by date automatically, so you can look back and see how far you've come — a week, a month, or a year later.</p>
+        <ul>
+          <li>Clean, distraction-free writing space</li>
+          <li>Visual streak tracker to build the habit</li>
+          <li>Works great even with a slow or no internet connection</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature reverse">
+      <div class="feature-art">
+        <div class="phone-frame"><div class="notch"></div><img src="images/image3.png" alt="Deeply entry editor with a gentle writing prompt and a voice input button"></div>
+      </div>
+      <div class="feature-copy">
+        <div class="kicker">Write your way</div>
+        <h3>Type it, or just say it out loud.</h3>
+        <p>Not everyone wants to type on a small screen. Tap the microphone and speak your entry naturally — Deeply turns it into text for you. A gentle daily prompt is always there if you're not sure what to write about.</p>
+        <ul>
+          <li>Voice-to-text entries, hands-free</li>
+          <li>Thoughtful daily prompts to get you started</li>
+          <li>No pressure to write a lot — a sentence is enough</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-art">
+        <div class="phone-frame"><div class="notch"></div><img src="images/image4.png" alt="Deeply insights dashboard showing streaks, total entries, weekly activity, and top themes"></div>
+      </div>
+      <div class="feature-copy">
+        <div class="kicker">Insights &amp; Reflection</div>
+        <h3>See the patterns you'd otherwise miss.</h3>
+        <p>Deeply notices recurring themes, shifts in mood, and quiet patterns across your entries — then reflects them back to you in plain language, not clinical jargon.</p>
+        <ul>
+          <li>Weekly activity and mood overview</li>
+          <li>Recurring themes like work, family, health, or rest</li>
+          <li>Gentle AI reflections, clearly labeled as a starting point — never a diagnosis</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature reverse">
+      <div class="feature-art">
+        <div class="phone-frame"><div class="notch"></div><img src="images/image8.png" alt="Deeply range dashboard showing multiple weeks selected together with a combined mood and theme breakdown"></div>
+      </div>
+      <div class="feature-copy">
+        <div class="kicker">Range Dashboard</div>
+        <h3>Zoom out from a week to a season.</h3>
+        <p>A single day can be noisy — one bad night doesn't tell you much. Drag your finger across several weeks on the activity strip and Deeply combines them into one view, so you can see the shape of a longer stretch of your life at a glance.</p>
+        <ul>
+          <li>Compare how a rough month stacks up against a calmer one</li>
+          <li>Spot slow-building patterns a single entry would never reveal — like stress quietly climbing over several weeks before it becomes obvious</li>
+          <li>Get a combined theme and mood breakdown for exactly the period you choose, instead of scrolling back through dozens of entries by hand</li>
+          <li>Useful context to bring into a conversation with a friend, family member, or counselor — "here's how the last two months actually went," backed by your own words</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>You decide how private is private.</h2>
+      <p>Most journaling apps quietly send your writing to a server. Deeply flips that: on-device is the default, and any cloud option is entirely your choice.</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-art">
+        <div class="phone-frame"><div class="notch"></div><img src="images/image5.png" alt="Deeply privacy and AI settings screen listing on-device AI and optional cloud providers"></div>
+      </div>
+      <div class="feature-copy">
+        <div class="kicker">Your choice, your control</div>
+        <h3>On-device by default. Cloud only if you want it.</h3>
+        <p>By default, Deeply's reflections run right on your phone — no internet connection, no data leaving your pocket. If you'd like deeper, more powerful reflections, you can optionally connect your own AI account.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;">
+          <span class="pill moss">on-device</span>
+          <span class="pill plum">your own key (optional)</span>
+        </div>
+        <p style="margin-top:18px;">Switching modes never sends your past entries anywhere without asking you first — your history stays exactly where you left it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Made for real life, everywhere.</h2>
+      <p>Whether you're on a fast city network or a spotty rural connection, Deeply keeps working.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon">📶</div>
+        <h4>No internet? No problem.</h4>
+        <p>Writing and on-device reflection work completely offline. Your journal is never held hostage by a weak signal.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🌍</div>
+        <h4>Write in your own words</h4>
+        <p>Journal in whatever language you think in. There's no "correct" way to write — Deeply meets you where you are.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔔</div>
+        <h4>A gentle daily nudge</h4>
+        <p>Set one reminder at a time that suits your day, and slowly build a ritual that sticks — no guilt, no streak-shaming.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="reassure">
+      <div><div class="stat">100%</div><div class="label">Private by default</div></div>
+      <div><div class="stat">0</div><div class="label">Ads, ever</div></div>
+      <div><div class="stat">1</div><div class="label">Tap to start writing</div></div>
+      <div><div class="stat">24/7</div><div class="label">Works fully offline</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="band-alt" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Simple, honest pricing.</h2>
+      <p>Journaling itself is always free. Upgrade only if you want deeper reflections and your full history.</p>
+    </div>
+
+    <div class="price-card">
+      <span class="price-tag">1st month free</span>
+      <div style="font-size:20px; font-weight:600;">Deeply Monthly</div>
+      <div class="amount">$6.99<span>/month, after your free month</span></div>
+      <ul class="price-list">
+        <li>✓ Unlimited weekly AI reflections</li>
+        <li>✓ Full history &amp; pattern dashboard</li>
+        <li>✓ Theme &amp; mood trend charts</li>
+        <li>✓ Export your journal (JSON / PDF)</li>
+      </ul>
+      <a class="btn btn-primary" href="#download">Claim your free month</a>
+      <div class="price-fine">Cancel anytime. No annual lock-in, no hidden fees.</div>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap" style="text-align:center;">
+    <div class="section-head">
+      <h2>Your story is worth keeping.</h2>
+      <p>Download Deeply and write your first entry today — it takes less than a minute to begin.</p>
+    </div>
+    <div class="btn-row" style="justify-content:center;">
+      <a class="btn btn-primary" href="#">Download for Android</a>
+      <a class="btn btn-primary" href="#">Download for iPhone</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="brand">Deeply</div>
+      <p style="max-width:32ch; margin-top:10px;">A private journaling companion. Your words stay yours.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#how-it-works">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    © 2026 Deeply. Made with care for anyone who wants a quiet place to think.
+  </div>
+</footer>
+
+</body>
+</html>
